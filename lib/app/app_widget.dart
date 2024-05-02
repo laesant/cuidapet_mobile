@@ -1,4 +1,5 @@
 import 'package:asuka/asuka.dart';
+import 'package:cuidapet_mobile/app/core/ui/ui_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,10 +15,10 @@ class AppWidget extends StatelessWidget {
       designSize: const Size(390, 844),
       useInheritedMediaQuery: true,
       builder: (_, __) => MaterialApp.router(
-        title: 'Cuidapet',
+        title: UiConfig.title,
         debugShowCheckedModeBanner: false,
         builder: Asuka.builder,
-        theme: ThemeData(primarySwatch: Colors.blue),
+        theme: UiConfig.theme,
         routeInformationParser: Modular.routeInformationParser,
         routerDelegate: Modular.routerDelegate,
       ),
