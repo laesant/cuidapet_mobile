@@ -35,7 +35,7 @@ class CuidapetTextFormField extends StatelessWidget {
                         icon: Icon(obscureTextValue
                             ? Icons.lock_outline
                             : Icons.lock_open_outlined))
-                    : null),
+                    : null), 
           );
         });
   }
