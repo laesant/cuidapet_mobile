@@ -27,9 +27,11 @@ class _LoginRegisterButtons extends StatelessWidget {
         RoundedButtonWithIcon(
           width: 170.w,
           color: context.primaryColorDark,
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pushNamed('/auth/register');
+          },
           icon: Icons.mail,
-          title: 'E-mail',
+          title: 'Cadastre-se',
         ),
       ],
     );
