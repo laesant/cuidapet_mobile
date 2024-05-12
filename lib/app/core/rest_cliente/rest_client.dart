@@ -1,6 +1,6 @@
 import 'package:cuidapet_mobile/app/core/rest_cliente/rest_client_response.dart';
 
-abstract class RestClient {
+abstract interface class RestClient {
   RestClient auth();
   RestClient unauth();
 
