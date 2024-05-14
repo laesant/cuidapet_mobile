@@ -25,12 +25,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           SizedBox(height: 20.h),
           CuidapetDefaultButton(
-            onPressed: () {
-              Loader.show();
-              Future.delayed(Duration(seconds: 2), () {
-                Loader.hide();
-              });
-            },
+            onPressed: () {},
             label: 'Entrar',
           ),
         ],

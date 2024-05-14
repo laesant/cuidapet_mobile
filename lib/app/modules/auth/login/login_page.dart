@@ -3,6 +3,7 @@ import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/cuidapet_default_button.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/cuidapet_text_form_field.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/loader.dart';
+import 'package:cuidapet_mobile/app/core/ui/widgets/messsages.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/rounded_button_with_icon.dart';
 import 'package:cuidapet_mobile/app/modules/auth/login/widgets/or_separator.dart';
 import 'package:flutter/material.dart';
