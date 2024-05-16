@@ -1,7 +1,7 @@
 import 'package:asuka/asuka.dart';
 
-class Messsages {
-  Messsages._();
+class Messages {
+  Messages._();
   static void alert(String message) {
     AsukaSnackbar.alert(message).show();
   }

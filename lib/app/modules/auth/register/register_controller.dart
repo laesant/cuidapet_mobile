@@ -1,4 +1,6 @@
+import 'package:cuidapet_mobile/app/core/exceptions/user_exists_exception.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/loader.dart';
+import 'package:cuidapet_mobile/app/core/ui/widgets/messsages.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:cuidapet_mobile/app/core/logger/app_logger.dart';
@@ -19,8 +21,16 @@ abstract class RegisterControllerBase with Store {
 
   Future<void> register(
       {required String email, required String password}) async {
-    Loader.show();
-    await Future.delayed(const Duration(seconds: 2));
-    Loader.hide();
+    try {
+      Loader.show();
+      await _userService.register(email, password);
+    } on UserExistsException {
+      Messages.alert('E-mail já utilizado, por favor escolha outro');
+    } catch (e, s) {
+      _log.error("Erro ao registrar usuário", e, s);
+      Messages.alert('Erro ao registrar usuário');
+    } finally {
+      Loader.hide();
+    }
   }
 }
