@@ -1,5 +1,7 @@
 import 'package:cuidapet_mobile/app/core/exceptions/failure.dart';
 import 'package:cuidapet_mobile/app/core/exceptions/user_not_exists_exception.dart';
+import 'package:cuidapet_mobile/app/core/helpers/constants.dart';
+import 'package:cuidapet_mobile/app/core/local_storage/local_storage.dart';
 import 'package:cuidapet_mobile/app/core/logger/app_logger.dart';
 import 'package:cuidapet_mobile/app/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,11 +11,16 @@ import './user_service.dart';
 class UserServiceImpl implements UserService {
   final AppLogger _log;
   final UserRepository _userRepository;
-  UserServiceImpl({
-    required AppLogger log,
-    required UserRepository userRepository,
-  })  : _log = log,
-        _userRepository = userRepository;
+  final LocalStorage _localStorage;
+
+  UserServiceImpl(
+      {required AppLogger log,
+      required UserRepository userRepository,
+      required LocalStorage localStorage})
+      : _log = log,
+        _userRepository = userRepository,
+        _localStorage = localStorage;
+
   @override
   Future<void> register(String email, String password) async {
     try {
@@ -42,6 +49,12 @@ class UserServiceImpl implements UserService {
             message:
                 'E-mail não confirmado, por favor verifique a sua caixa de spam.');
       }
+
+      final accessToken = await _userRepository.login(email, password);
+      await _saveAccessToken(accessToken);
+      final xx = await _localStorage
+          .read<String>(Constants.localStorageAccessTokenKey);
+      print(xx);
     } on FirebaseAuthException catch (e, s) {
       _log.error(e.code, e, s);
       if (e.code == 'invalid-credential') {
@@ -49,4 +62,7 @@ class UserServiceImpl implements UserService {
       }
     }
   }
+
+  Future<void> _saveAccessToken(String accessToken) => _localStorage
+      .write<String>(Constants.localStorageAccessTokenKey, accessToken);
 }
