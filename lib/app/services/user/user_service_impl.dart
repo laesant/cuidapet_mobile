@@ -12,14 +12,17 @@ class UserServiceImpl implements UserService {
   final AppLogger _log;
   final UserRepository _userRepository;
   final LocalStorage _localStorage;
+  final LocalSecureStorage _localSecureStorage;
 
   UserServiceImpl(
       {required AppLogger log,
       required UserRepository userRepository,
-      required LocalStorage localStorage})
+      required LocalStorage localStorage,
+      required LocalSecureStorage localSecureStorage})
       : _log = log,
         _userRepository = userRepository,
-        _localStorage = localStorage;
+        _localStorage = localStorage,
+        _localSecureStorage = localSecureStorage;
 
   @override
   Future<void> register(String email, String password) async {
@@ -52,6 +55,7 @@ class UserServiceImpl implements UserService {
 
       final accessToken = await _userRepository.login(email, password);
       await _saveAccessToken(accessToken);
+      await _confirmLogin();
     } on FirebaseAuthException catch (e, s) {
       _log.error(e.code, e, s);
       if (e.code == 'invalid-credential') {
@@ -62,4 +66,11 @@ class UserServiceImpl implements UserService {
 
   Future<void> _saveAccessToken(String accessToken) => _localStorage
       .write<String>(Constants.localStorageAccessTokenKey, accessToken);
+
+  Future<void> _confirmLogin() async {
+    final confirmLogin = await _userRepository.confirmLogin();
+    await _saveAccessToken(confirmLogin.accessToken);
+    await _localSecureStorage.write(
+        Constants.localStorageRefreshTokenKey, confirmLogin.refreshToken);
+  }
 }
