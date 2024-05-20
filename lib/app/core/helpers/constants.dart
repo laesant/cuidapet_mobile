@@ -8,4 +8,6 @@ class Constants {
       'rest_client_receive_timeout';
 
   static const String localStorageAccessTokenKey = 'local_storage_access_token';
+
+  static const String restClientAuthRequired = 'auth_required';
 }

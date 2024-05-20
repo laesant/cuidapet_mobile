@@ -52,9 +52,6 @@ class UserServiceImpl implements UserService {
 
       final accessToken = await _userRepository.login(email, password);
       await _saveAccessToken(accessToken);
-      final xx = await _localStorage
-          .read<String>(Constants.localStorageAccessTokenKey);
-      print(xx);
     } on FirebaseAuthException catch (e, s) {
       _log.error(e.code, e, s);
       if (e.code == 'invalid-credential') {

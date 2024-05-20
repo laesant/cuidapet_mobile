@@ -1,6 +1,5 @@
 import 'package:cuidapet_mobile/app/core/exceptions/failure.dart';
 import 'package:cuidapet_mobile/app/core/exceptions/user_exists_exception.dart';
-import 'package:cuidapet_mobile/app/core/exceptions/user_not_exists_exception.dart';
 import 'package:cuidapet_mobile/app/core/logger/app_logger.dart';
 import 'package:cuidapet_mobile/app/core/rest_cliente/rest_client.dart';
 import 'package:cuidapet_mobile/app/core/rest_cliente/rest_client_exception.dart';
