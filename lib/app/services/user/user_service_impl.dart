@@ -56,6 +56,7 @@ class UserServiceImpl implements UserService {
       final accessToken = await _userRepository.login(email, password);
       await _saveAccessToken(accessToken);
       await _confirmLogin();
+      await _getUserData();
     } on FirebaseAuthException catch (e, s) {
       _log.error(e.code, e, s);
       if (e.code == 'invalid-credential') {
@@ -72,5 +73,11 @@ class UserServiceImpl implements UserService {
     await _saveAccessToken(confirmLogin.accessToken);
     await _localSecureStorage.write(
         Constants.localStorageRefreshTokenKey, confirmLogin.refreshToken);
+  }
+
+  Future<void> _getUserData() async {
+    final user = await _userRepository.getUserLogged();
+    await _localStorage.write<String>(
+        Constants.localStorageUserDataKey, user.toJson());
   }
 }
