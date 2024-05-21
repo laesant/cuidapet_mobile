@@ -9,6 +9,7 @@ class LoginModule extends Module {
 
   @override
   void binds(Injector i) {
+   
     i.addLazySingleton(LoginController.new);
     super.binds(i);
   }

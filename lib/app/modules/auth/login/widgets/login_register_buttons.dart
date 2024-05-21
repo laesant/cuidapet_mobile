@@ -2,7 +2,7 @@ part of '../login_page.dart';
 
 class _LoginRegisterButtons extends StatelessWidget {
   const _LoginRegisterButtons();
-
+  LoginController get controller => Modular.get<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -20,7 +20,7 @@ class _LoginRegisterButtons extends StatelessWidget {
         RoundedButtonWithIcon(
           width: 170.w,
           color: const Color(0xffe15031),
-          onTap: () {},
+          onTap: () => controller.socialLogin(SocialLoginType.google),
           icon: Icons.g_mobiledata_sharp,
           title: 'Google',
         ),

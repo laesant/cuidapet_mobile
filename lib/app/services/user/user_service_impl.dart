@@ -3,6 +3,9 @@ import 'package:cuidapet_mobile/app/core/exceptions/user_not_exists_exception.da
 import 'package:cuidapet_mobile/app/core/helpers/constants.dart';
 import 'package:cuidapet_mobile/app/core/local_storage/local_storage.dart';
 import 'package:cuidapet_mobile/app/core/logger/app_logger.dart';
+import 'package:cuidapet_mobile/app/models/social_login_type.dart';
+import 'package:cuidapet_mobile/app/models/social_network.dart';
+import 'package:cuidapet_mobile/app/repositories/social/social_repository.dart';
 import 'package:cuidapet_mobile/app/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -11,16 +14,19 @@ import './user_service.dart';
 class UserServiceImpl implements UserService {
   final AppLogger _log;
   final UserRepository _userRepository;
+  final SocialRepository _socialRepository;
   final LocalStorage _localStorage;
   final LocalSecureStorage _localSecureStorage;
 
   UserServiceImpl(
       {required AppLogger log,
       required UserRepository userRepository,
+      required SocialRepository socialRepository,
       required LocalStorage localStorage,
       required LocalSecureStorage localSecureStorage})
       : _log = log,
         _userRepository = userRepository,
+        _socialRepository = socialRepository,
         _localStorage = localStorage,
         _localSecureStorage = localSecureStorage;
 
@@ -79,5 +85,27 @@ class UserServiceImpl implements UserService {
     final user = await _userRepository.getUserLogged();
     await _localStorage.write<String>(
         Constants.localStorageUserDataKey, user.toJson());
+  }
+
+  @override
+  Future<void> socialLogin(SocialLoginType type) async {
+    final SocialNetwork socialNetwork;
+    final AuthCredential authCredential;
+    final auth = FirebaseAuth.instance;
+
+    switch (type) {
+      case SocialLoginType.facebook:
+        throw Failure(message: 'Facebook não implementado!');
+      //  break;
+      case SocialLoginType.google:
+        socialNetwork = await _socialRepository.googleLogin();
+        authCredential = GoogleAuthProvider.credential(
+          idToken: socialNetwork.id,
+          accessToken: socialNetwork.accessToken,
+        );
+        break;
+    }
+
+    await auth.signInWithCredential(authCredential);
   }
 }
