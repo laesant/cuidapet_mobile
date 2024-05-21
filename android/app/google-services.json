@@ -12,7 +12,20 @@
           "package_name": "br.com.blacknoise.cuidapet_mobile"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "754764520930-0r73ijfrr8nnnmk20cg9mpb5sh42fr8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.blacknoise.cuidapet_mobile",
+            "certificate_hash": "e6d3cfea17c587cd5268135307240cdff9288dbe"
+          }
+        },
+        {
+          "client_id": "754764520930-22g990t7gk53kl3kmmvtctemeuemkvdi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAL98VQvvP_9RxKFk247PoxvJ5BbMwUin8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "754764520930-22g990t7gk53kl3kmmvtctemeuemkvdi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
