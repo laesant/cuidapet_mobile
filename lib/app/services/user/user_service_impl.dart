@@ -71,6 +71,39 @@ class UserServiceImpl implements UserService {
     }
   }
 
+  @override
+  Future<void> socialLogin(SocialLoginType type) async {
+    try {
+      final SocialNetwork socialNetwork;
+      final AuthCredential authCredential;
+      final auth = FirebaseAuth.instance;
+
+      switch (type) {
+        case SocialLoginType.facebook:
+          socialNetwork = await _socialRepository.facebookLogin();
+          authCredential =
+              FacebookAuthProvider.credential(socialNetwork.accessToken);
+          break;
+        case SocialLoginType.google:
+          socialNetwork = await _socialRepository.googleLogin();
+          authCredential = GoogleAuthProvider.credential(
+            idToken: socialNetwork.id,
+            accessToken: socialNetwork.accessToken,
+          );
+          break;
+      }
+
+      await auth.signInWithCredential(authCredential);
+      final accessToken = await _userRepository.loginSocial(socialNetwork);
+      await _saveAccessToken(accessToken);
+      await _confirmLogin();
+      await _getUserData();
+    } on FirebaseAuthException catch (e, s) {
+      _log.error('Erro ao realizar login com $type', e, s);
+      throw Failure(message: 'Erro ao realizar login');
+    }
+  }
+
   Future<void> _saveAccessToken(String accessToken) => _localStorage
       .write<String>(Constants.localStorageAccessTokenKey, accessToken);
 
@@ -85,27 +118,5 @@ class UserServiceImpl implements UserService {
     final user = await _userRepository.getUserLogged();
     await _localStorage.write<String>(
         Constants.localStorageUserDataKey, user.toJson());
-  }
-
-  @override
-  Future<void> socialLogin(SocialLoginType type) async {
-    final SocialNetwork socialNetwork;
-    final AuthCredential authCredential;
-    final auth = FirebaseAuth.instance;
-
-    switch (type) {
-      case SocialLoginType.facebook:
-        throw Failure(message: 'Facebook não implementado!');
-      //  break;
-      case SocialLoginType.google:
-        socialNetwork = await _socialRepository.googleLogin();
-        authCredential = GoogleAuthProvider.credential(
-          idToken: socialNetwork.id,
-          accessToken: socialNetwork.accessToken,
-        );
-        break;
-    }
-
-    await auth.signInWithCredential(authCredential);
   }
 }

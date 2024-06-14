@@ -7,6 +7,7 @@ import 'package:cuidapet_mobile/app/core/rest_cliente/rest_client.dart';
 import 'package:cuidapet_mobile/app/core/rest_cliente/rest_client_exception.dart';
 import 'package:cuidapet_mobile/app/core/rest_cliente/rest_client_response.dart';
 import 'package:cuidapet_mobile/app/models/confirm_login.dart';
+import 'package:cuidapet_mobile/app/models/social_network.dart';
 import 'package:cuidapet_mobile/app/models/user_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -87,6 +88,31 @@ class UserRepositoryImpl implements UserRepository {
     } on RestClientException catch (e, s) {
       _log.error('Erro ao buscar dados do usuário logado.', e, s);
       throw Failure(message: 'Erro ao buscar dados do usuário logado');
+    }
+  }
+
+  @override
+  Future<String> loginSocial(SocialNetwork socialNetwork) async {
+    try {
+      final RestClientResponse(:data) =
+          await _restClient.unauth().post('/auth/', data: {
+        'login': socialNetwork.email,
+        'social_login': true,
+        'avatar': socialNetwork.avatar,
+        'social_type': socialNetwork.type,
+        'social_key': socialNetwork.id,
+        'supplier_user': false,
+      });
+
+      return data['access_token'];
+    } on RestClientException catch (e, s) {
+      _log.error('Erro ao realizar login', e, s);
+      if (e.statusCode == 403) {
+        throw Failure(
+            message: 'Usuário inconsistente, entre em contato com o suporte.');
+      }
+      throw Failure(
+          message: 'Erro ao realizar login, tente novamente mais tarde!');
     }
   }
 }
