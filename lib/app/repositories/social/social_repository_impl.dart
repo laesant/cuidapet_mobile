@@ -19,7 +19,7 @@ class SocialRepositoryImpl implements SocialRepository {
             email: userData['email'],
             type: 'Facebook',
             avatar: userData['picture']['data']['url'],
-            accessToken: result.accessToken?.token ?? '');
+            accessToken: result.accessToken?.tokenString ?? '');
       case LoginStatus.cancelled:
         throw Failure(message: 'Login cancelado');
       case LoginStatus.failed:
