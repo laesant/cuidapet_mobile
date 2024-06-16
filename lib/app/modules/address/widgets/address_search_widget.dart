@@ -8,18 +8,18 @@ class _AddressSearchWidget extends StatefulWidget {
 }
 
 class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
-  FutureOr<List<Place>?> _suggestionsCallback(String search) {
+  FutureOr<List<PlaceModel>?> _suggestionsCallback(String search) {
     return [
-      Place(address: 'Av Paulista, 200', lat: 123.09, lng: 233.32),
-      Place(address: 'Av Paulista, 300', lat: 123.09, lng: 233.32),
+      PlaceModel(address: 'Av Paulista, 200', lat: 123.09, lng: 233.32),
+      PlaceModel(address: 'Av Paulista, 300', lat: 123.09, lng: 233.32),
     ];
   }
 
-  void _onSelected(Place? value) {}
+  void _onSelected(PlaceModel? value) {}
 
   @override
   Widget build(BuildContext context) {
-    return TypeAheadField<Place>(
+    return TypeAheadField<PlaceModel>(
       onSelected: _onSelected,
       suggestionsCallback: _suggestionsCallback,
       itemBuilder: (BuildContext context, value) {

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
-import 'package:cuidapet_mobile/app/models/place.dart';
+import 'package:cuidapet_mobile/app/models/place_model.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 
