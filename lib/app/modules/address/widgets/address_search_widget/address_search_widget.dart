@@ -1,25 +1,45 @@
-part of '../address_page.dart';
+part of '../../address_page.dart';
+
+typedef AddressSelectedCallback = void Function(PlaceModel);
 
 class _AddressSearchWidget extends StatefulWidget {
-  const _AddressSearchWidget();
+  final AddressSelectedCallback addressSelectedCallback;
+  const _AddressSearchWidget({required this.addressSelectedCallback});
 
   @override
   State<_AddressSearchWidget> createState() => _AddressSearchWidgetState();
 }
 
 class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
-  FutureOr<List<PlaceModel>?> _suggestionsCallback(String search) {
-    return [
-      PlaceModel(address: 'Av Paulista, 200', lat: 123.09, lng: 233.32),
-      PlaceModel(address: 'Av Paulista, 300', lat: 123.09, lng: 233.32),
-    ];
+  final searchEC = TextEditingController();
+  final searchFN = FocusNode();
+
+  final controller = Modular.get<AddressSearchController>();
+
+  @override
+  void dispose() {
+    searchEC.dispose();
+    searchFN.dispose();
+    super.dispose();
   }
 
-  void _onSelected(PlaceModel? value) {}
+  FutureOr<List<PlaceModel>?> _suggestionsCallback(String search) {
+    if (search.isNotEmpty) {
+      return controller.searchAddress(search);
+    }
+    return [];
+  }
+
+  void _onSelected(PlaceModel value) {
+    searchEC.text = value.address;
+    widget.addressSelectedCallback(value);
+  }
 
   @override
   Widget build(BuildContext context) {
     return TypeAheadField<PlaceModel>(
+      controller: searchEC,
+      focusNode: searchFN,
       onSelected: _onSelected,
       suggestionsCallback: _suggestionsCallback,
       itemBuilder: (BuildContext context, value) {
