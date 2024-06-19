@@ -2,8 +2,11 @@ import 'package:cuidapet_mobile/app/core/ui/extensions/size_screen_extension.dar
 import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/cuidapet_default_button.dart';
 import 'package:cuidapet_mobile/app/models/place_model.dart';
+import 'package:cuidapet_mobile/app/modules/address/address_detail/address_detail_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobx/mobx.dart';
 
 class AddressDetailPage extends StatefulWidget {
   const AddressDetailPage({super.key, required this.place});
@@ -13,6 +16,29 @@ class AddressDetailPage extends StatefulWidget {
 }
 
 class _AddressDetailPageState extends State<AddressDetailPage> {
+  final additionalEC = TextEditingController();
+  final controller = Modular.get<AddressDetailController>();
+  late final ReactionDisposer addressDisposer;
+  @override
+  void initState() {
+    super.initState();
+    addressDisposer = reaction(
+      (_) => controller.address,
+      (address) {
+        if (address != null) {
+          Navigator.of(context).pop(address);
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    additionalEC.dispose();
+    addressDisposer();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +88,7 @@ class _AddressDetailPageState extends State<AddressDetailPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextFormField(
+                controller: additionalEC,
                 decoration: const InputDecoration(
                   labelText: 'Complemento',
                 ),
@@ -72,7 +99,11 @@ class _AddressDetailPageState extends State<AddressDetailPage> {
               child: SizedBox(
                 width: .9.sw,
                 height: 60.h,
-                child: CuidapetDefaultButton(onPressed: () {}, label: 'Salvar'),
+                child: CuidapetDefaultButton(
+                    onPressed: () {
+                      controller.saveAddress(widget.place, additionalEC.text);
+                    },
+                    label: 'Salvar'),
               ),
             )
           ],
