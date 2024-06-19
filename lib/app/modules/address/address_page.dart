@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cuidapet_mobile/app/core/database/sqlite_connection_factory.dart';
 import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_mobile/app/models/place_model.dart';
 import 'package:cuidapet_mobile/app/modules/address/widgets/address_search_widget/address_search_controller.dart';
