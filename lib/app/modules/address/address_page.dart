@@ -36,12 +36,12 @@ class _AddressPageState
             const SizedBox(height: 20),
             _AddressSearchWidget(
               addressSelectedCallback: (place) {
-                Modular.to.pushNamed('/address/detail/', arguments: place);
+                controller.goToAddressDetail(place);
               },
             ),
             const SizedBox(height: 30),
             ListTile(
-              onTap: () {},
+              onTap: () => controller.myLocation(),
               leading: const CircleAvatar(
                 radius: 30,
                 child: Icon(
