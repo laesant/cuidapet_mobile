@@ -64,59 +64,63 @@ class _AddressPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Text(
-              'Adicione ou escolha um endereço',
-              style: context.textTheme.headlineLarge,
-            ),
-            const SizedBox(height: 20),
-            Observer(
-              builder: (_) {
-                return _AddressSearchWidget(
-                  key: UniqueKey(),
-                  place: controller.place,
-                  addressSelectedCallback: (place) {
-                    controller.goToAddressDetail(place);
-                  },
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-            ListTile(
-              onTap: () => controller.myLocation(),
-              leading: const CircleAvatar(
-                radius: 30,
-                child: Icon(
-                  Icons.near_me,
-                ),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) => controller.addressWasSelected(),
+      child: Scaffold(
+        appBar: AppBar(),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            children: [
+              Text(
+                'Adicione ou escolha um endereço',
+                style: context.textTheme.headlineLarge,
               ),
-              title: const Text(
-                'Localização Atual',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
+              const SizedBox(height: 20),
+              Observer(
+                builder: (_) {
+                  return _AddressSearchWidget(
+                    key: UniqueKey(),
+                    place: controller.place,
+                    addressSelectedCallback: (place) {
+                      controller.goToAddressDetail(place);
+                    },
+                  );
+                },
               ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-            ),
-            const SizedBox(height: 20),
-            Observer(
-              builder: (_) {
-                return Column(
-                  children: controller.addresses
-                      .map((address) => _AddressItem(
-                            address: address,
-                            onTap: () => controller.selectAddress(address),
-                          ))
-                      .toList(),
-                );
-              },
-            )
-          ],
+              const SizedBox(height: 30),
+              ListTile(
+                onTap: () => controller.myLocation(),
+                leading: const CircleAvatar(
+                  radius: 30,
+                  child: Icon(
+                    Icons.near_me,
+                  ),
+                ),
+                title: const Text(
+                  'Localização Atual',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                trailing: const Icon(Icons.arrow_forward_ios),
+              ),
+              const SizedBox(height: 20),
+              Observer(
+                builder: (_) {
+                  return Column(
+                    children: controller.addresses
+                        .map((address) => _AddressItem(
+                              address: address,
+                              onTap: () => controller.selectAddress(address),
+                            ))
+                        .toList(),
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

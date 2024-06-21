@@ -1,5 +1,6 @@
 import 'package:cuidapet_mobile/app/core/life_cycle/controller_life_cycle.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/loader.dart';
+import 'package:cuidapet_mobile/app/core/ui/widgets/messsages.dart';
 import 'package:cuidapet_mobile/app/models/address_model.dart';
 import 'package:cuidapet_mobile/app/models/place_model.dart';
 import 'package:cuidapet_mobile/app/services/address/address_service.dart';
@@ -98,5 +99,15 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
   Future<void> selectAddress(AddressModel address) async {
     await _addressService.selectAddress(address);
     Modular.to.pop(address);
+  }
+
+  Future<void> addressWasSelected() async {
+    final address = await _addressService.getAddressSelected();
+
+    if (address != null) {
+      Modular.to.pop(address);
+    } else {
+      Messages.alert('Por favor selecione ou cadastre um endereço');
+    }
   }
 }
