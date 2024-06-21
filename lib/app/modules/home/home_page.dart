@@ -5,6 +5,7 @@ import 'package:cuidapet_mobile/app/modules/home/home_controller.dart';
 import 'package:cuidapet_mobile/app/services/address/address_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
         title: const Text('Home Page'),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextButton(
               onPressed: () {
@@ -39,7 +40,7 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
               child: const Text('Teste Refresh Token')),
           TextButton(
               onPressed: () async {
-                await Modular.to.pushNamed('/address/');
+                controller.goToAddressPage();
               },
               child: const Text('Ir para endereço')),
           TextButton(
@@ -51,8 +52,18 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
                 });
               },
               child: const Text('Obter endereço selecionado')),
-          Text(addressModel?.address ?? 'Nenhum endereço selecionado'),
-          Text(addressModel?.additional ?? 'Nenhum complemento selecionado'),
+          Observer(
+            builder: (_) {
+              return Text(controller.addressModel?.address ??
+                  'Nenhum endereço selecionado');
+            },
+          ),
+          Observer(
+            builder: (_) {
+              return Text(controller.addressModel?.additional ??
+                  'Nenhum complemento selecionado');
+            },
+          )
         ],
       ),
     );
