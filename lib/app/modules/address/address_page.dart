@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cuidapet_mobile/app/core/life_cycle/page_life_cycle_state.dart';
 import 'package:cuidapet_mobile/app/core/mixins/location_mixin.dart';
 import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
+import 'package:cuidapet_mobile/app/models/address_model.dart';
 import 'package:cuidapet_mobile/app/models/place_model.dart';
 import 'package:cuidapet_mobile/app/modules/address/address_controller.dart';
 import 'package:cuidapet_mobile/app/modules/address/widgets/address_search_widget/address_search_controller.dart';
@@ -107,7 +108,10 @@ class _AddressPageState
               builder: (_) {
                 return Column(
                   children: controller.addresses
-                      .map((address) => _ItemTile(address: address.address))
+                      .map((address) => _AddressItem(
+                            address: address,
+                            onTap: () => controller.selectAddress(address),
+                          ))
                       .toList(),
                 );
               },

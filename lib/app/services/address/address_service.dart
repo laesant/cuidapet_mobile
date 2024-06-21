@@ -6,4 +6,6 @@ abstract interface class AddressService {
   Future<List<AddressModel>> getAddress();
   Future<AddressModel> saveAddress(PlaceModel place, String additional);
   Future<void> deleteAll();
+  Future<void> selectAddress(AddressModel address);
+  Future<AddressModel?>  getAddressSelected();
 }

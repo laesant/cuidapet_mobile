@@ -11,6 +11,8 @@ class Constants {
   static const String localStorageAccessTokenKey = 'local_storage_access_token';
   static const String localStorageRefreshTokenKey =
       'local_storage_refresh_token';
+  static const String localStorageDefaultAddressDataKey =
+      'local_storage_default_address_data';
 
   static const String restClientAuthRequired = 'auth_required';
 }
