@@ -82,13 +82,12 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
 }
 
 class _ItemTile extends StatelessWidget {
-  const _ItemTile({required this.address, this.onTap});
+  const _ItemTile({required this.address});
   final String address;
-  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: onTap,
       leading: const Icon(Icons.location_on),
       title: Text(address),
     );
