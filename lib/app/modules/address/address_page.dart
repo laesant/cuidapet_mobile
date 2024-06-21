@@ -74,9 +74,15 @@ class _AddressPageState
               style: context.textTheme.headlineLarge,
             ),
             const SizedBox(height: 20),
-            _AddressSearchWidget(
-              addressSelectedCallback: (place) {
-                controller.goToAddressDetail(place);
+            Observer(
+              builder: (_) {
+                return _AddressSearchWidget(
+                  key: UniqueKey(),
+                  place: controller.place,
+                  addressSelectedCallback: (place) {
+                    controller.goToAddressDetail(place);
+                  },
+                );
               },
             ),
             const SizedBox(height: 30),
