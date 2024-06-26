@@ -10,7 +10,6 @@ class AppModule extends Module {
 
   @override
   void routes(RouteManager r) {
-    //  r.add(route)
     r.module('/auth', module: AuthModule());
     r.module('/home', module: HomeModule());
     r.module('/address', module: AddressModule());

@@ -11,5 +11,8 @@ final class UiConfig {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xffA8CE4B),
         ),
+        // appBarTheme: const AppBarTheme(
+        //   backgroundColor: Color(0xffA8CE4B),
+        // ),
       );
 }

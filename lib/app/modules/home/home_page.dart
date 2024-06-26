@@ -1,12 +1,9 @@
 import 'package:cuidapet_mobile/app/core/life_cycle/page_life_cycle_state.dart';
-import 'package:cuidapet_mobile/app/core/rest_cliente/rest_client.dart';
-import 'package:cuidapet_mobile/app/models/address_model.dart';
+
 import 'package:cuidapet_mobile/app/modules/home/home_controller.dart';
-import 'package:cuidapet_mobile/app/services/address/address_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cuidapet_mobile/app/modules/home/widgets/home_app_bar.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,55 +13,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
-  AddressModel? addressModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              child: const Text('Sair')),
-          TextButton(
-              onPressed: () async {
-                final categoriesResponse =
-                    await Modular.get<RestClient>().auth().get('/categories/');
-                print(categoriesResponse.data);
-              },
-              child: const Text('Teste Refresh Token')),
-          TextButton(
-              onPressed: () async {
-                controller.goToAddressPage();
-              },
-              child: const Text('Ir para endereço')),
-          TextButton(
-              onPressed: () async {
-                final address =
-                    await Modular.get<AddressService>().getAddressSelected();
-                setState(() {
-                  addressModel = address;
-                });
-              },
-              child: const Text('Obter endereço selecionado')),
-          Observer(
-            builder: (_) {
-              return Text(controller.addressModel?.address ??
-                  'Nenhum endereço selecionado');
-            },
-          ),
-          Observer(
-            builder: (_) {
-              return Text(controller.addressModel?.additional ??
-                  'Nenhum complemento selecionado');
-            },
-          )
+      drawer: const Drawer(),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => const [
+          HomeAppBar(),
         ],
+        body: Container(),
       ),
     );
   }
