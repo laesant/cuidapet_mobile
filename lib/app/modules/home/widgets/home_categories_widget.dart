@@ -1,41 +1,53 @@
 part of '../home_page.dart';
 
 class _HomeCategoriesWidget extends StatelessWidget {
-  const _HomeCategoriesWidget();
-
+  const _HomeCategoriesWidget({required this.controller});
+  final HomeController controller;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 130,
-      child: ListView.builder(
-        itemCount: 15,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return const _CategoryItem();
-        },
-      ),
-    );
+        height: 130,
+        child: Observer(
+          builder: (_) {
+            return Center(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.listCategories.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  final category = controller.listCategories[index];
+                  return _CategoryItem(category);
+                },
+              ),
+            );
+          },
+        ));
   }
 }
 
 class _CategoryItem extends StatelessWidget {
-  const _CategoryItem();
-
+  const _CategoryItem(this.category);
+  final SupplierCategoryModel category;
+  static const categoriesIcons = {
+    'P': Icons.pets,
+    'V': Icons.local_hospital,
+    'C': Icons.store_mall_directory,
+  };
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(20),
-      child: const Column(
+      child: Column(
         children: [
           CircleAvatar(
             radius: 30,
             child: Icon(
-              Icons.pets,
+              categoriesIcons[category.type],
               size: 30,
             ),
           ),
-          SizedBox(height: 8),
-          Text('Petshop'),
+          const SizedBox(height: 10),
+          Text(category.name),
         ],
       ),
     );

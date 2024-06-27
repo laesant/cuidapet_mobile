@@ -22,6 +22,7 @@ class _CuidapetAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      scrolledUnderElevation: 0,
       title: const Padding(
         padding: EdgeInsets.only(bottom: 12),
         child: Text(

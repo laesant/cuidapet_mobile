@@ -1,7 +1,10 @@
 import 'package:cuidapet_mobile/app/core/life_cycle/controller_life_cycle.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/loader.dart';
+import 'package:cuidapet_mobile/app/core/ui/widgets/messsages.dart';
 import 'package:cuidapet_mobile/app/models/address_model.dart';
+import 'package:cuidapet_mobile/app/models/supplier_category_model.dart';
 import 'package:cuidapet_mobile/app/services/address/address_service.dart';
+import 'package:cuidapet_mobile/app/services/supplier/supplier_service.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 part 'home_controller.g.dart';
@@ -10,17 +13,29 @@ class HomeController = HomeControllerBase with _$HomeController;
 
 abstract class HomeControllerBase with Store, ControllerLifeCycle {
   final AddressService _addressService;
+  final SupplierService _supplierService;
+
   @readonly
   AddressModel? _addressModel;
 
-  HomeControllerBase({required AddressService addressService})
-      : _addressService = addressService;
+  @readonly
+  var _listCategories = <SupplierCategoryModel>[];
+
+  HomeControllerBase(
+      {required AddressService addressService,
+      required SupplierService supplierService})
+      : _addressService = addressService,
+        _supplierService = supplierService;
 
   @override
   Future<void> onReady() async {
-    Loader.show();
-    await _getAddressSelected();
-    Loader.hide();
+    try {
+      Loader.show();
+      await _getAddressSelected();
+      await _getCategories();
+    } finally {
+      Loader.hide();
+    }
     super.onReady();
   }
 
@@ -37,5 +52,15 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   Future<void> goToAddressPage() async {
     final address = await Modular.to.pushNamed<AddressModel>('/address/');
     if (address != null) _addressModel = address;
+  }
+
+  Future<void> _getCategories() async {
+    try {
+      final categories = await _supplierService.getCategories();
+      _listCategories = [...categories];
+    } catch (_) {
+      Messages.alert('Erro ao buscar as categorias.');
+      throw Exception();
+    }
   }
 }

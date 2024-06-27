@@ -1,4 +1,5 @@
 import 'package:cuidapet_mobile/app/core/life_cycle/page_life_cycle_state.dart';
+import 'package:cuidapet_mobile/app/models/supplier_category_model.dart';
 import 'package:cuidapet_mobile/app/modules/home/home_controller.dart';
 import 'package:cuidapet_mobile/app/modules/home/widgets/home_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,9 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
             ),
           ),
           SliverToBoxAdapter(
-            child: _HomeCategoriesWidget(),
+            child: _HomeCategoriesWidget(
+              controller:  controller,
+            ),
           ),
         ],
         body: Container(),
