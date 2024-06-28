@@ -197,7 +197,7 @@ class _HomeSupplierGrid extends StatelessWidget {
         Observer(
           builder: (_) {
             return SliverGrid.builder(
-              itemCount: 10,
+              itemCount: _controller.listSuppliersByAddress.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 1.1,
