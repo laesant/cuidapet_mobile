@@ -16,7 +16,7 @@ class _HomeCategoriesWidget extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   final category = controller.listCategories[index];
-                  return _CategoryItem(category);
+                  return _CategoryItem(category, controller);
                 },
               ),
             );
@@ -26,8 +26,9 @@ class _HomeCategoriesWidget extends StatelessWidget {
 }
 
 class _CategoryItem extends StatelessWidget {
-  const _CategoryItem(this.category);
+  const _CategoryItem(this.category, this._controller);
   final SupplierCategoryModel category;
+  final HomeController _controller;
   static const categoriesIcons = {
     'P': Icons.pets,
     'V': Icons.local_hospital,
@@ -35,20 +36,33 @@ class _CategoryItem extends StatelessWidget {
   };
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            child: Icon(
-              categoriesIcons[category.type],
-              size: 30,
+    return InkWell(
+      onTap: () => _controller.filterSupplierCategory(category),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Observer(
+              builder: (_) {
+                return CircleAvatar(
+                  radius: 30,
+                  backgroundColor:
+                      _controller.supplierCategoryFilterSelected?.id ==
+                              category.id
+                          ? context.colorScheme.tertiaryContainer
+                          : context.primaryColorLight,
+                  child: Icon(
+                    size: 30,
+                    categoriesIcons[category.type],
+                  ),
+                );
+              },
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(category.name),
-        ],
+            const SizedBox(height: 10),
+            Text(category.name),
+          ],
+        ),
       ),
     );
   }
