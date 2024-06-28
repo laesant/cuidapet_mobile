@@ -16,8 +16,8 @@ class _HomeSupplierTab extends StatelessWidget {
                 duration: const Duration(milliseconds: 400),
                 child:
                     controller.supplierPageTypeSelected == SupplierPageType.list
-                        ? const _HomeSupplierList()
-                        : const _HomeSupplierGrid(),
+                        ? _HomeSupplierList(controller)
+                        : _HomeSupplierGrid(),
               );
             },
           ),
@@ -74,28 +74,34 @@ class _HomeTabHeader extends StatelessWidget {
 }
 
 class _HomeSupplierList extends StatelessWidget {
-  const _HomeSupplierList();
-
+  const _HomeSupplierList(this._controller);
+  final HomeController _controller;
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            childCount: 10,
-            (context, index) {
-              return _HomeSupplierListItemWidget();
-            },
-          ),
-        ),
+        Observer(
+          builder: (_) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                childCount: _controller.listSuppliersByAddress.length,
+                (context, index) {
+                  final SupplierNearbyMeModel supplier =
+                      _controller.listSuppliersByAddress[index];
+                  return _HomeSupplierListItemWidget(supplier);
+                },
+              ),
+            );
+          },
+        )
       ],
     );
   }
 }
 
 class _HomeSupplierListItemWidget extends StatelessWidget {
-  const _HomeSupplierListItemWidget();
-
+  const _HomeSupplierListItemWidget(this.supplier);
+  final SupplierNearbyMeModel supplier;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -120,14 +126,15 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Clinica Central ABC',
+                          supplier.name,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(Icons.location_on, size: 16),
-                            Text('1.34km de distância'),
+                            const Icon(Icons.location_on, size: 16),
+                            Text(
+                                '${supplier.distance.toStringAsFixed(2)}km de distância'),
                           ],
                         ),
                       ],
@@ -167,10 +174,9 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                 ),
                 color: Colors.grey,
                 borderRadius: BorderRadius.circular(100),
-                image: const DecorationImage(
+                image: DecorationImage(
                   fit: BoxFit.contain,
-                  image: NetworkImage(
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQskONOFOspkbTbOrVbW2yONt1S5rPIRzcdNA&shttps://img.nsctotal.com.br/wp-content/uploads/2023/12/Golden-retriever.jpg'),
+                  image: NetworkImage(supplier.logo),
                 ),
               ),
             ),
