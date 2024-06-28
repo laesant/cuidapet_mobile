@@ -17,7 +17,7 @@ class _HomeSupplierTab extends StatelessWidget {
                 child:
                     controller.supplierPageTypeSelected == SupplierPageType.list
                         ? _HomeSupplierList(controller)
-                        : _HomeSupplierGrid(),
+                        : _HomeSupplierGrid(controller),
               );
             },
           ),
@@ -188,10 +188,80 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
 }
 
 class _HomeSupplierGrid extends StatelessWidget {
-  const _HomeSupplierGrid();
-
+  const _HomeSupplierGrid(this._controller);
+  final HomeController _controller;
   @override
   Widget build(BuildContext context) {
-    return const Text('Supplier grid');
+    return CustomScrollView(
+      slivers: [
+        Observer(
+          builder: (_) {
+            return SliverGrid.builder(
+              itemCount: 10,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.1,
+              ),
+              itemBuilder: (context, index) {
+                final supplier = _controller.listSuppliersByAddress[index];
+                return _HomeSupplierCardItemWidget(supplier);
+              },
+            );
+          },
+        )
+      ],
+    );
+  }
+}
+
+class _HomeSupplierCardItemWidget extends StatelessWidget {
+  const _HomeSupplierCardItemWidget(this.supplier);
+  final SupplierNearbyMeModel supplier;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Card(
+          elevation: 5,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          margin:
+              const EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 10),
+          child: SizedBox.expand(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 40, right: 10, left: 10, bottom: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    supplier.name,
+                    style: context.textTheme.titleSmall,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    '${supplier.distance.toStringAsFixed(2)}km de distância',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: CircleAvatar(
+            radius: 40,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            child: CircleAvatar(
+              radius: 35,
+              backgroundImage: NetworkImage(
+                supplier.logo,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
