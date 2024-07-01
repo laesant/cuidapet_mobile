@@ -104,84 +104,89 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
   final SupplierNearbyMeModel supplier;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Stack(
-        children: [
-          Container(
-            height: 80.h,
-            width: 1.sw,
-            margin: const EdgeInsets.only(left: 30),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 50),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          supplier.name,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const Icon(Icons.location_on, size: 16),
-                            Text(
-                                '${supplier.distance.toStringAsFixed(2)}km de distância'),
-                          ],
-                        ),
-                      ],
+    return InkWell(
+      onTap: () {
+        Modular.to.pushNamed('/supplier/', arguments: supplier.id);
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Stack(
+          children: [
+            Container(
+              height: 80.h,
+              width: 1.sw,
+              margin: const EdgeInsets.only(left: 30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 50),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            supplier.name,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              const Icon(Icons.location_on, size: 16),
+                              Text(
+                                  '${supplier.distance.toStringAsFixed(2)}km de distância'),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: CircleAvatar(
-                      backgroundColor: context.primaryColorLight,
-                      maxRadius: 15,
-                      child: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      )),
-                )
-              ],
-            ),
-          ),
-          Container(
-            width: 70,
-            height: 70,
-            margin: const EdgeInsets.only(top: 5),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(
-                width: 1,
-                color: Colors.transparent,
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: CircleAvatar(
+                        backgroundColor: context.primaryColorLight,
+                        maxRadius: 15,
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 15,
+                        )),
+                  )
+                ],
               ),
-              borderRadius: BorderRadius.circular(100),
             ),
-            child: Container(
+            Container(
+              width: 70,
+              height: 70,
+              margin: const EdgeInsets.only(top: 5),
               decoration: BoxDecoration(
+                color: Colors.transparent,
                 border: Border.all(
-                  width: 5,
-                  color: Colors.grey.shade100,
+                  width: 1,
+                  color: Colors.transparent,
                 ),
-                color: Colors.grey,
                 borderRadius: BorderRadius.circular(100),
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: NetworkImage(supplier.logo),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 5,
+                    color: Colors.grey.shade100,
+                  ),
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(100),
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: NetworkImage(supplier.logo),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -219,49 +224,54 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
   final SupplierNearbyMeModel supplier;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Card(
-          elevation: 5,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          margin:
-              const EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 10),
-          child: SizedBox.expand(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 40, right: 10, left: 10, bottom: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    supplier.name,
-                    style: context.textTheme.titleSmall,
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    '${supplier.distance.toStringAsFixed(2)}km de distância',
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+    return InkWell(
+      onTap: () {
+        Modular.to.pushNamed('/supplier/', arguments: supplier.id);
+      },
+      child: Stack(
+        children: [
+          Card(
+            elevation: 5,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            margin:
+                const EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 10),
+            child: SizedBox.expand(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 40, right: 10, left: 10, bottom: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      supplier.name,
+                      style: context.textTheme.titleSmall,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      '${supplier.distance.toStringAsFixed(2)}km de distância',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: CircleAvatar(
-            radius: 40,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          Align(
+            alignment: Alignment.topCenter,
             child: CircleAvatar(
-              radius: 35,
-              backgroundImage: NetworkImage(
-                supplier.logo,
+              radius: 40,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              child: CircleAvatar(
+                radius: 35,
+                backgroundImage: NetworkImage(
+                  supplier.logo,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
