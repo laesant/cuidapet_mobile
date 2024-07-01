@@ -1,19 +1,27 @@
-import 'package:cuidapet_mobile/app/modules/supplier/widgets/supplier_detail.dart';
-import 'package:cuidapet_mobile/app/modules/supplier/widgets/supplier_service_widget.dart';
 import 'package:flutter/material.dart';
 
-class SupplierPage extends StatefulWidget {
-  const SupplierPage({super.key});
+import 'package:cuidapet_mobile/app/core/life_cycle/page_life_cycle_state.dart';
+import 'package:cuidapet_mobile/app/modules/supplier/supplier_controller.dart';
+import 'package:cuidapet_mobile/app/modules/supplier/widgets/supplier_detail.dart';
+import 'package:cuidapet_mobile/app/modules/supplier/widgets/supplier_service_widget.dart';
 
+class SupplierPage extends StatefulWidget {
+  final int _supplierId;
+  const SupplierPage({
+    super.key,
+    required int supplierId,
+  }) : _supplierId = supplierId;
   @override
   State<SupplierPage> createState() => _SupplierPageState();
 }
 
-class _SupplierPageState extends State<SupplierPage> {
+class _SupplierPageState
+    extends PageLifeCycleState<SupplierController, SupplierPage> {
   late final ScrollController _scrollController;
-  //bool sliverCollapsed = false;
   final ValueNotifier<bool> sliverCollapsed = ValueNotifier(false);
-
+  @override
+  Map<String, dynamic>? get params => {'supplierId': widget._supplierId};
+  
   @override
   void initState() {
     super.initState();
