@@ -1,4 +1,3 @@
-import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_mobile/app/modules/supplier/widgets/supplier_detail.dart';
 import 'package:cuidapet_mobile/app/modules/supplier/widgets/supplier_service_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,8 @@ class SupplierPage extends StatefulWidget {
 
 class _SupplierPageState extends State<SupplierPage> {
   late final ScrollController _scrollController;
-  bool sliverCollapsed = false;
+  //bool sliverCollapsed = false;
+  final ValueNotifier<bool> sliverCollapsed = ValueNotifier(false);
 
   @override
   void initState() {
@@ -21,16 +21,18 @@ class _SupplierPageState extends State<SupplierPage> {
     _scrollController.addListener(() {
       if (_scrollController.offset > 180 &&
           !_scrollController.position.outOfRange) {
-        setState(() {
-          sliverCollapsed = true;
-        });
+        sliverCollapsed.value = true;
       } else if (_scrollController.offset <= 180 &&
           !_scrollController.position.outOfRange) {
-        setState(() {
-          sliverCollapsed = false;
-        });
+        sliverCollapsed.value = false;
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -45,20 +47,9 @@ class _SupplierPageState extends State<SupplierPage> {
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 200,
-            leading: Visibility(
-                visible: sliverCollapsed,
-                replacement: const CircleAvatar(
-                  child: BackButton(),
-                ),
-                child: const BackButton()),
-            title: Visibility(
-              visible: sliverCollapsed,
-              child: const Text('Clinica Central ABC'),
-            ),
-            flexibleSpace: FlexibleSpaceBar(
+          ValueListenableBuilder<bool>(
+            valueListenable: sliverCollapsed,
+            child: FlexibleSpaceBar(
               stretchModes: const [
                 StretchMode.fadeTitle,
                 StretchMode.zoomBackground,
@@ -70,6 +61,22 @@ class _SupplierPageState extends State<SupplierPage> {
                     const SizedBox.shrink(),
               ),
             ),
+            builder: (_, value, child) {
+              return SliverAppBar(
+                  pinned: true,
+                  expandedHeight: 200,
+                  leading: Visibility(
+                      visible: value,
+                      replacement: const CircleAvatar(
+                        child: BackButton(),
+                      ),
+                      child: const BackButton()),
+                  title: Visibility(
+                    visible: value,
+                    child: const Text('Clinica Central ABC'),
+                  ),
+                  flexibleSpace: child);
+            },
           ),
           SliverToBoxAdapter(
             child: SupplierDetail(),
