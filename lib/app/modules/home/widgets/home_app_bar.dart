@@ -62,6 +62,7 @@ class _CuidapetAppBar extends StatelessWidget {
                   decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
+                      hintText: 'Pesquisar',
                       suffixIcon: const Icon(Icons.search, size: 25),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
