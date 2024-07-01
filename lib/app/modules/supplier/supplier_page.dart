@@ -48,16 +48,32 @@ class _SupplierPageState
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        icon: const Icon(Icons.schedule),
-        label: const Text('Fazer agendamento'),
+      floatingActionButton: Observer(
+        builder: (_) {
+          return AnimatedSlide(
+            duration: const Duration(milliseconds: 300),
+            offset: Offset(0, controller.totalServicesSelected > 0 ? 0 : 1),
+            child: AnimatedOpacity(
+              curve: Curves.easeInOut,
+              duration: const Duration(milliseconds: 500),
+              opacity: controller.totalServicesSelected > 0 ? 1 : 0,
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  
+                },
+                icon: const Icon(Icons.schedule),
+                label: const Text('Fazer agendamento'),
+              ),
+            ),
+          );
+        },
       ),
       body: Observer(
         builder: (_) {
           final supplier = controller.supplierModel;
-          if (supplier == null)
+          if (supplier == null) {
             return const Text('Buscando dados do fornecedor');
+          }
           return CustomScrollView(
             controller: _scrollController,
             slivers: [
@@ -101,7 +117,7 @@ class _SupplierPageState
                   child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Serviços (0 selecionados)',
+                  'Serviços (${controller.totalServicesSelected} selecionado${controller.totalServicesSelected == 1 ? '' : 's'})',
                   textAlign: TextAlign.start,
                   style: const TextStyle(
                     fontSize: 15,
@@ -114,7 +130,9 @@ class _SupplierPageState
                 itemBuilder: (context, index) {
                   final supplierService = controller.supplierServices[index];
                   return SupplierServiceWidget(
-                      supplierService: supplierService);
+                    supplierController: controller,
+                    supplierService: supplierService,
+                  );
                 },
               )
             ],
