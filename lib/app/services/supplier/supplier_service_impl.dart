@@ -1,6 +1,8 @@
 import 'package:cuidapet_mobile/app/models/address_model.dart';
 import 'package:cuidapet_mobile/app/models/supplier_category_model.dart';
+import 'package:cuidapet_mobile/app/models/supplier_model.dart';
 import 'package:cuidapet_mobile/app/models/supplier_nearby_me_model.dart';
+import 'package:cuidapet_mobile/app/models/supplier_service_model.dart';
 import 'package:cuidapet_mobile/app/repositories/supplier/supplier_repository.dart';
 
 import './supplier_service.dart';
@@ -18,4 +20,11 @@ class SupplierServiceImpl implements SupplierService {
   @override
   Future<List<SupplierNearbyMeModel>> findNearbyMe(AddressModel address) =>
       _supplierRepository.findNearbyMe(address);
+
+  @override
+  Future<SupplierModel> findById(int id) => _supplierRepository.findById(id);
+
+  @override
+  Future<List<SupplierServiceModel>> findServices(int supplierId) =>
+      _supplierRepository.findServices(supplierId);
 }
