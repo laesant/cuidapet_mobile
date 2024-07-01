@@ -1,10 +1,13 @@
 import 'package:cuidapet_mobile/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_mobile/app/models/supplier_model.dart';
+import 'package:cuidapet_mobile/app/modules/supplier/supplier_controller.dart';
 import 'package:flutter/material.dart';
 
 class SupplierDetail extends StatelessWidget {
-  const SupplierDetail({super.key, required this.supplier});
+  const SupplierDetail(
+      {super.key, required this.supplier, required this.supplierController});
   final SupplierModel supplier;
+  final SupplierController supplierController;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,10 +41,12 @@ class SupplierDetail extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.location_city),
           title: Text(supplier.address),
+          onTap: supplierController.goToGeoOrCopyAddressToClipart,
         ),
         ListTile(
           leading: const Icon(Icons.phone),
           title: Text(supplier.phone),
+          onTap: supplierController.goToPhoneOrCopyPhoneToClipart,
         ),
         Divider(
           thickness: 1,

@@ -4,8 +4,12 @@ import 'package:cuidapet_mobile/app/core/ui/widgets/loader.dart';
 import 'package:cuidapet_mobile/app/core/ui/widgets/messsages.dart';
 import 'package:cuidapet_mobile/app/models/supplier_model.dart';
 import 'package:cuidapet_mobile/app/models/supplier_service_model.dart';
+import 'package:cuidapet_mobile/app/modules/schedules/model/schedule_view_model.dart';
 import 'package:cuidapet_mobile/app/services/supplier/supplier_service.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 part 'supplier_controller.g.dart';
 
 class SupplierController = SupplierControllerBase with _$SupplierController;
@@ -83,4 +87,37 @@ abstract class SupplierControllerBase with Store, ControllerLifeCycle {
       _servicesSelected.contains(supplierService);
 
   int get totalServicesSelected => _servicesSelected.length;
+
+  Future<void> goToPhoneOrCopyPhoneToClipart() async {
+    final phoneUrl = 'tel:${_supplierModel?.phone}';
+
+    if (await canLaunchUrlString(phoneUrl)) {
+      await launchUrlString(phoneUrl);
+    } else {
+      await Clipboard.setData(ClipboardData(text: _supplierModel?.phone ?? ''));
+      Messages.info('Telefone copiado!');
+    }
+  }
+
+  Future<void> goToGeoOrCopyAddressToClipart() async {
+    final geoUrl =
+        'geo:${_supplierModel?.latitude},${_supplierModel?.longitude}';
+    if (await canLaunchUrlString(geoUrl)) {
+      await launchUrlString(geoUrl);
+    } else {
+      await Clipboard.setData(
+          ClipboardData(text: _supplierModel?.address ?? ''));
+      Messages.info('Endereço copiado!');
+    }
+  }
+
+  void goToSchedule() {
+    Modular.to.pushNamed(
+      '/schedules/',
+      arguments: ScheduleViewModel(
+        supplierId: _supplierId,
+        services: _servicesSelected.toList(),
+      ),
+    );
+  }
 }
