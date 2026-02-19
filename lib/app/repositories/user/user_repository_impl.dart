@@ -24,7 +24,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> register(String email, String password) async {
     try {
       await _restClient.unauth().post('/auth/register', data: {
-        'email': email,
+        'email': email, 
         'password': password,
       });
     } on RestClientException catch (e, s) {

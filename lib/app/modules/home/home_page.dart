@@ -41,7 +41,7 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
             ),
           ),
         ],
-        body: _HomeSupplierTab(
+        body: _HomeSupplierTab( 
           controller: controller,
         ),
       ),
